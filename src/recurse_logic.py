@@ -1,5 +1,5 @@
 import subprocess
-from typing import List, Tuple, Union
+from typing import List
 
 import boto3
 import click
@@ -10,7 +10,7 @@ def parse_s3url(s3url: str) -> List[str]:
     s3url = s3url if s3url.endswith("/") else s3url + "/"
     assert s3url != "", "S3 bucket path must be provided!"
 
-    return s3url.split("/", 1)
+    return s3url.split("/", maxsplit=1)
 
 
 def recursive_listdir(
@@ -48,7 +48,7 @@ def recursive_listdir(
 @click.option("--limit", "-l", default=10, type=int, help="Limit per recursion step.")
 def s3tree(s3url: str, depth: int, profile: str, limit: int) -> None:
 
-    bucket_name, prefix = parse_s3url(s3url)
+    bucket_name, prefix, *_ = parse_s3url(s3url)
     session = boto3.Session(profile_name=profile)
     client = session.client("s3")
 

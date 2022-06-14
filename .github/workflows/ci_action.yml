@@ -88,4 +88,4 @@ jobs:
 
       - name: Run mypy
         run: |
-          mypy s3tree
+          mypy --config-file pyproject.toml src
