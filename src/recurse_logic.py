@@ -16,10 +16,10 @@ def parse_s3url(s3url: str) -> List[str]:
 
 def process_list(object_list: List[str], pattern: str, ignore_pattern: str) -> List[str]:
     if pattern != "":
-        object_list = [obj for obj in object_list if re.search(pattern, obj)]
+        object_list = [obj for obj in object_list if re.search(pattern, obj.split("/")[-1])]
 
     if ignore_pattern != "":
-        object_list = [obj for obj in object_list if not re.search(ignore_pattern, obj)]
+        object_list = [obj for obj in object_list if not re.search(ignore_pattern, obj.split("/")[-1])]
 
     return object_list
 
