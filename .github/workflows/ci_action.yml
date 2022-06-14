@@ -1,0 +1,91 @@
+name: build
+
+on:
+  push:
+  schedule:
+    - cron: '0 0 * * *'
+
+env:
+  # The only way to simulate if-else statement
+  CHECKOUT_BRANCH: ${{ github.event_name == 'push' && github.ref || 'develop' }}
+
+jobs:
+
+  check-code-black:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ env.CHECKOUT_BRANCH }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+          architecture: x64
+
+      - name: Run black
+        run: |
+          pip install black[jupyter]
+          black . --check --diff
+
+  check-code-flake8:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ env.CHECKOUT_BRANCH }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+          architecture: x64
+
+      - name: Run flake8
+        run: |
+          pip install flake8
+          flake8
+
+  check-code-isort:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ env.CHECKOUT_BRANCH }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+          architecture: x64
+
+      - name: Run isort
+        run: |
+          pip install isort
+          isort . --diff --check
+
+  check-code-mypy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ env.CHECKOUT_BRANCH }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+          architecture: x64
+
+      - name: Install packages
+        run: |
+          pip install -e .[DEV]
+
+      - name: Run mypy
+        run: |
+          mypy s3tree
