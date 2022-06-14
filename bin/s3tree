@@ -1,2 +1,3 @@
-import s3tree
-s3tree.s3tree()
+from src.recurse_logic import s3tree
+
+s3tree()

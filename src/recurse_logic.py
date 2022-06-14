@@ -1,11 +1,11 @@
 import subprocess
-from typing import Tuple
+from typing import List, Tuple, Union
 
 import boto3
 import click
 
 
-def parse_s3url(s3url: str) -> Tuple[str, str]:
+def parse_s3url(s3url: str) -> List[str]:
     s3url = s3url.replace("s3://", "")
     s3url = s3url if s3url.endswith("/") else s3url + "/"
     assert s3url != "", "S3 bucket path must be provided!"
@@ -13,7 +13,15 @@ def parse_s3url(s3url: str) -> Tuple[str, str]:
     return s3url.split("/", 1)
 
 
-def recursive_listdir(client, bucket, depth, limit, prefix="", global_list=[], global_level=0):
+def recursive_listdir(
+    client: boto3.client,
+    bucket: str,
+    depth: int,
+    limit: int,
+    prefix: str = "",
+    global_list: List[str] = [],
+    global_level: int = 0,
+) -> List[str]:
 
     response = client.list_objects_v2(Bucket=bucket, Prefix=prefix, Delimiter="/", MaxKeys=limit)
 
@@ -27,18 +35,18 @@ def recursive_listdir(client, bucket, depth, limit, prefix="", global_list=[], g
 
         for entry in object_list:
             if global_level < depth - 1:
-                recursive_listdir(client, bucket, depth, limit, entry, global_list, global_level + 1)
+                deeper_list = recursive_listdir(client, bucket, depth, limit, entry, global_list, global_level + 1)
+                global_list.extend(deeper_list)
 
-    if global_level == 0:
-        return global_list
+    return global_list
 
 
 @click.command()
 @click.argument("s3url", default="")
-@click.option("--depth", "-d", default=1, type=int, help="Depth of the constructed tree.")
+@click.option("--depth", "-d", default=3, type=int, help="Depth of the constructed tree.")
 @click.option("--profile", "-p", type=str, help="AWS profile name.")
 @click.option("--limit", "-l", default=10, type=int, help="Limit per recursion step.")
-def s3tree(s3url, depth, profile, limit):
+def s3tree(s3url: str, depth: int, profile: str, limit: int) -> None:
 
     bucket_name, prefix = parse_s3url(s3url)
     session = boto3.Session(profile_name=profile)
