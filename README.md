@@ -4,15 +4,6 @@ A simple utility to recursively walk the AWS S3 structure and report the in the 
 
 Not tested for Windows, feel free to contribute.
 
-## Requirements
-
-`s3tree` doesn't attempt to create a tree from scratch, but rather uses the existing functionality from the `tree` system package, so this is a requirement, which can be installed using the links below:
-
-|OS|Link|
-|-|-|
-|Linux|http://mama.indstate.edu/users/ice/tree/|
-|macOS|https://formulae.brew.sh/formula/tree|
-
 ## Arguments and Options
 
 ```sh
@@ -30,9 +21,6 @@ Options:
   --prune                    Makes tree prune empty directories from the
                              output, useful when used in conjunction with -P
                              or -I.
-  --kwargs TEXT              Extra parameters provided to the `tree` command.
-                             Only make sense for the usecase with the
-                             `--fromfile .` option.
   --help                     Show this message and exit.
 ```
 
@@ -57,8 +45,8 @@ Show only files starting with 0
 s3tree s3://bucket-name/dir/subdir/ -P '^0'
 ```
 
-Ignore files ending with `.json`, use specific AWS profile
+Ignore files ending with `.json`, use specific AWS profile, prune last level
 
 ```sh
-s3tree s3://bucket-name/dir/subdir/ -I '.json$' --profile my_profile
+s3tree s3://bucket-name/dir/subdir/ -I '.json$' --profile my_profile --prune
 ```
