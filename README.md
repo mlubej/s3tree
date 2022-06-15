@@ -6,7 +6,7 @@ Not tested for Windows, feel free to contribute.
 
 ## Arguments and Options
 
-```sh
+```
 Usage: s3tree [OPTIONS] [S3URL]
 
 Options:
