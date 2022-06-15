@@ -7,21 +7,19 @@ Not tested for Windows, feel free to contribute.
 ## Arguments and Options
 
 ```sh
-s3tree --help
 Usage: s3tree [OPTIONS] [S3URL]
 
 Options:
-  -d, --depth INTEGER        Depth of the recursive walk.
-  -p, --profile TEXT         AWS profile name.
-  -l, --limit INTEGER        Limit results per AWS request in recursion step.
-  -P, --pattern TEXT         List only those files that match the wild-card
-                             pattern.
-  -I, --ignore_pattern TEXT  Do not list those files that match the wild-card
-                             pattern.
-  --prune                    Makes tree prune empty directories from the
-                             output, useful when used in conjunction with -P
-                             or -I.
-  --help                     Show this message and exit.
+  -d, --depth INTEGER   Depth of the recursive walk.
+  -p, --profile TEXT    AWS profile name.
+  -l, --limit INTEGER   Limit results per AWS request in recursion step.
+  -P, --pattern TEXT    List only those files that match the wild-card
+                        pattern.
+  -I, --i_pattern TEXT  Do not list those files that match the wild-card
+                        pattern.
+  --prune               Makes tree prune empty directories from the output,
+                        useful when used in conjunction with -P or -I.
+  --help                Show this message and exit.
 ```
 
 
