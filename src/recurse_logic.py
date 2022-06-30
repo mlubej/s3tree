@@ -48,7 +48,6 @@ def tree(
     extension: str = "",
     level: int = 0,
 ) -> None:
-
     response = client.list_objects_v2(Bucket=bucket, Prefix=prefix, Delimiter="/", MaxKeys=limit + 1)
     object_list = []
     if "CommonPrefixes" in response:
@@ -92,7 +91,6 @@ def tree(
     help="Makes tree prune empty directories from the output, useful when used in conjunction with -P or -I.",
 )
 def s3tree(s3url: str, depth: int, profile: str, limit: int, pattern: str, i_pattern: str, prune: bool) -> None:
-
     bucket_name, prefix, *_ = parse_s3url(s3url)
     session = boto3.Session(profile_name=profile)
     client = session.client("s3")
