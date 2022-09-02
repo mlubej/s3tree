@@ -1,3 +1,4 @@
-from src.recurse_logic import s3tree
+#!/usr/bin/env python
+from s3tree.recurse_logic import s3tree
 
 s3tree()
